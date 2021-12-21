@@ -45,7 +45,7 @@
     rdfs:domain ns1:Trajet ;
     rdfs:range ns1:Transport .
 
-<http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Bus/998> ns1:possede_gare <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare/IDFM:10004>,
+<http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Bus/998> ns1:possede_arret <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare/IDFM:10004>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare/IDFM:10005>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare/IDFM:10012>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare/IDFM:10013>,
@@ -75111,7 +75111,8 @@ ns1:details_lieu a owl:DatatypeProperty ;
 ns1:emprunte a owl:ObjectProperty ;
     rdfs:domain ns1:User ;
     rdfs:range ns1:Itineraire ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+    rdfs:subPropertyOf owl:topObjectProperty ;
+    owl:inverseOf ns1:est_emprunte_par .
 
 ns1:name a owl:DatatypeProperty ;
     rdfs:domain owl:Thing ;
@@ -75132,11 +75133,13 @@ ns1:Trotinette a owl:Class ;
 ns1:Velo a owl:Class ;
     rdfs:subClassOf ns1:Non_motorise .
 
+ns1:est_emprunte_par a owl:ObjectProperty ;
+    rdfs:domain ns1:Itineraire ;
+    rdfs:range ns1:User .
+
 ns1:Train a owl:Class ;
     rdfs:subClassOf ns1:Ferrovier ;
     owl:disjointWith ns1:Tramway .
-
-ns1:User a owl:Class .
 
 ns1:VTC a owl:Class ;
     rdfs:subClassOf ns1:Routier .
@@ -75146,6 +75149,8 @@ ns1:Non_motorise a owl:Class ;
 
 ns1:Routier a owl:Class ;
     rdfs:subClassOf ns1:Transport .
+
+ns1:User a owl:Class .
 
 ns1:Ferrovier a owl:Class ;
     rdfs:subClassOf ns1:Transport .
@@ -75179,8 +75184,8 @@ ns1:Gare a owl:Class ;
     rdfs:subClassOf ns1:Lieu .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( ns1:Itineraire ns1:Transport ns1:User ns1:Ville ) .
+    owl:members ( ns1:Ferrovier ns1:Non_motorise ns1:Routier ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( ns1:Ferrovier ns1:Non_motorise ns1:Routier ) .
+    owl:members ( ns1:Itineraire ns1:Transport ns1:User ns1:Ville ) .
 

@@ -81,8 +81,18 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/emprunte">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/est_emprunte_par"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/est_emprunte_par -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/est_emprunte_par">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
     </owl:ObjectProperty>
     
 
