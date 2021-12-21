@@ -159,13 +159,15 @@ def add_user (user_name) :
         g.add((user_individual, RDF.type, user_uri)) # Adding individuals
         g.add( (user_individual, name_uri, name_literal) ) # adding name
 
+        g.serialize(destination='ontology/test.owl', format='turtle')
+
     except Exception :
         return False
 
     return True
 
 
-def add_itineraire_for_user (user_name, itineraire_name) :
+def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_fin) :
     """
     Rajoute un itineraire dans l'ontologie
     """
@@ -173,8 +175,15 @@ def add_itineraire_for_user (user_name, itineraire_name) :
     global g
 
     # On créer le type itinéraire ainsi que l'individu itineraire
-    itineraire_uri = URIRef(base_uri+"itineraire")
-    itineraire_individuals_uri = URIRef(base_uri+"itineraire/"+itineraire_name)
+    itineraire_uri = URIRef(base_uri+"Itineraire")
+    itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name)
+
+    # Horraire des itinéraires
+    horaire_depart_uri = URIRef(base_uri+"heure_debut")
+    horaire_fin_uri = URIRef(base_uri+"heure_fin")
+
+    hdi = Literal (horaire_debut, datatype=XSD.string)
+    hfi = Literal (horaire_fin, datatype=XSD.string)
 
     # On créer l'individu user
     user_individual_uri = URIRef(base_uri+"User/"+user_name)
@@ -186,9 +195,14 @@ def add_itineraire_for_user (user_name, itineraire_name) :
 
         # On ajoute l'individu itineraire
         g.add( (itineraire_individuals_uri, RDF.type, itineraire_uri) )
+        g.add( (itineraire_individuals_uri, horaire_depart_uri, hdi) )
+        g.add( (itineraire_individuals_uri, horaire_fin_uri, hfi) )
 
         # On lies les deux
         g.add( (user_individual_uri, effectue_uri, itineraire_individuals_uri) )
+
+        g.serialize(destination='ontology/test.owl', format='turtle')
+
     except Exception :
         print ("ERROR !")
         return False
@@ -197,42 +211,91 @@ def add_itineraire_for_user (user_name, itineraire_name) :
 
 def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     """
-    Ajoute un trajet specific pour un itineraire donnée
+    Ajoute un trajet specifique pour un itineraire donnée
     """
     # Variable global
     global base_uri
     global g
 
-    trajet_name = trajet_config ["trajet_name"] # nom du trajet
-    gare_depart_uri = URIRef(trajet_config ["gare_depart"]) # gare de départ
-    gare_fin_uri = URIRef(trajet_config ["gare_fin"]) # Gare fin
-    dure = trajet_config ["dure"]
+    # Itineraire
+    itineraire_individual = URIRef(base_uri+"Itineraire/"+str(itineraire_name))
+    est_combinaison_uri = URIRef(base_uri+"est_combinaison")
 
-    trajet_depart = URIRef(base_uri+"trajet_depart")
-    trajet_fin = URIRef(base_uri+"trajet_fin")
+    # Trajet
+    trajet_uri = URIRef(base_uri+"Trajet")
+    trajet_individual_uri = URIRef(base_uri+"Trajet/"+trajet_config["trajet_name"])
 
-    # On pointe l'itinéraire
-    itineraire_individuals_uri = URIRef(base_uri+"itineraire/"+itineraire_name)
+    utilise_uri =  URIRef(base_uri+"utilise")
+    transport_uri = URIRef(trajet_config["transport"])
 
-    trajet_uri = URIRef(base_uri+"/Trajet")
-    trajet_individual_uri = URIRef(base_uri+"/Trajet/"+trajet_name)
+    g.add( (trajet_individual_uri, RDF.type, trajet_uri) ) # On créer l'instance du trajet
+
+    # Lieux
+    lieu_depart_uri = URIRef(trajet_config["lieu_depart"])
+    lieu_fin_uri = URIRef(trajet_config["lieu_fin"])
+
+    # Lieu object type
+    arrive_a_uri = URIRef(base_uri+"arrive_a")
+    part_de_uri = URIRef(base_uri+"part_de")
+
+    # On lies tout
+    g.add ( (trajet_individual_uri, arrive_a_uri,lieu_fin_uri) )
+    g.add ( (trajet_individual_uri, part_de_uri,lieu_depart_uri) )
+
+    g.add( (trajet_individual_uri, utilise_uri, transport_uri) )
+
+    # On lie le trajet avec l'itineraire
+    g.add ( (itineraire_individual, est_combinaison_uri, trajet_individual_uri) )
+
+    g.serialize(destination='ontology/test.owl', format='turtle')
+
+    return True
 
 
-    # On créer le trajet
-    g.add((trajet_individual_uri, RDF.type, trajet_uri)) # Adding individuals
+def add_lieu (nom_lieu, detail_lieu) :
+    """
+    Ajoute des lieux dans la base de données
+    """
 
-    # On  lies l'itinéraire avec le trajets
-    emprunte_uri = URIRef (base_uri+"emprunte")
-    g.add ( (itineraire_individuals_uri, emprunte_uri, trajet_individual_uri) )
+    global g
+    global base_uri
 
-    # On le lies avec tout les objects properties
-    g.add( (trajet_individual_uri, trajet_depart, gare_depart_uri))
-    g.add( (trajet_individual_uri, trajet_fin, gare_fin_uri))
+    nom_lieu_treated = nom_lieu.replace(" ", "_")
 
-    # On créer le litteral
-    dure_trajet_uri = URIRef(base_uri+"duree_trajet")
-    dure_litteral = Literal(str(dure), datatype=XSD.int)
+    lieu_uri = URIRef(base_uri+"Lieu")
+    lieu_individual_uri = URIRef(base_uri+"Lieu/"+nom_lieu_treated)
+    name_uri = URIRef(base_uri+"name")
+    detail_uri = URIRef(base_uri+"details_lieu")
 
-    # On lies le trajet avec sa duré
-    g.add(trajet_individual_uri, dure_trajet_uri, dure_litteral)
-    
+    # On créer les literal
+    name_literal = Literal(str(nom_lieu), datatype=XSD.string)
+    detail_literal = Literal(str(detail_lieu), datatype=XSD.string)
+
+
+    try : 
+
+        g.add ( (lieu_individual_uri, RDF.type, lieu_uri) ) # Instancie le lieu
+        g.add ( (lieu_individual_uri, name_uri, name_literal) ) # On lies avec le noms
+        g.add ( (lieu_individual_uri, detail_uri, detail_literal) ) # On lies avec le noms
+
+        g.serialize(destination='ontology/test.owl', format='turtle')
+
+    except Exception :
+        print ("ERROR !")
+        return False
+
+    return True
+
+"""
+print (add_itineraire_for_user("Elie","maison","20h30", "21h00") )
+
+
+result = add_trajet_for_itineraire("maison", {
+    "trajet_name" : "part_2",
+    "transport" : base_uri + "Rer/C00006",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
+
+print (add_lieu("La maison de ma grand-mère", "C'est la maison de ma grand mère"))
+"""
