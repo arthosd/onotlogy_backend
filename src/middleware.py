@@ -20,8 +20,8 @@ def get_all_user () :
     knows_query = """
         SELECT DISTINCT ?nom
         WHERE {
-            ?nom rdf:type ns1:User .
-            ?nom ns1:name ?nom .
+            ?user rdf:type ns1:User .
+            ?user ns1:name ?nom .
 
         }"""
 
@@ -29,7 +29,7 @@ def get_all_user () :
 
     return result
 
-def get_all_itineraire () :
+def get_all_itineraire (user_id) :
     """
     Renvoie tout les itinéraires d'un utilisteur spécifique
     
@@ -38,16 +38,17 @@ def get_all_itineraire () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?itineraire
+        SELECT DISTINCT ?itineraire ?nom
         WHERE {
             ?itineraire rdf:type ns1:Itineraire .
-            ?itineraire ?p ?o
+            ?itineraire ns1:est_emprunte_par \"""" + user_id + """\" .
+            ?itineraire ns1:name ?nom .
+
         }"""
         
     result = g.query(knows_query)
 
     return result
-
 
 def get_all_trajet (itineraire_id) :
     """
@@ -60,10 +61,8 @@ def get_all_trajet (itineraire_id) :
     knows_query = """
         SELECT DISTINCT ?trajet ?duree
         WHERE {
-            ?trajet rdf:type ns1:Trajet .
-            ?trajet ns1:id itineraire_id .
-            ?trajet ns1:name .
-            ?trajet ns1:duree_trajet ?duree .
+            ?itineraire rdf:type ns1:Itineraire .
+            ?itineraire ns1:est_combinaison \"""" + itineraire_id + """\" .
         }"""
         
     result = g.query(knows_query)
@@ -94,9 +93,10 @@ def get_all_place () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?lieu
+        SELECT DISTINCT ?name
         WHERE {
             ?lieu rdf:type ns1:Lieu .
+            ?lieu ns1:name ? name .
         }"""
         
     result = g.query(knows_query)
@@ -113,8 +113,8 @@ def get_all_place_in_city (city_id) :
         SELECT DISTINCT ?lieu
         WHERE {
             ?ville rdf:type ns1:Ville .
-            ?ville ns1:id city_id .
-            ?lieu ns1:id .
+            ?ville ns1:id \"""" + city_id + """\" .
+            ?lieu ns1:Lieu .
         }"""
         
     result = g.query(knows_query)
@@ -129,10 +129,11 @@ def get_specific_place (place_id) :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?lieu ?details
+        SELECT DISTINCT ?name ?details
         WHERE {
             ?lieu rdf:type ns1:Lieu .
-            ?lieu ns1:name .
+            ?lieu ns1:id = \"""" + place_id + """\" .
+            ?lieu ns1:name ?name.
             ?lieu ns1:details_lieu ?details .
         }"""
         
