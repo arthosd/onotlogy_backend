@@ -17,11 +17,19 @@ def get_all_user () :
     """
     global g # permet d'utiliser la variable global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?nom
+        WHERE {
+            ?nom rdf:type ns1:User .
+            ?nom ns1:name ?nom .
+
+        }"""
+
+    result = g.query(knows_query)
 
     return result
 
-def get_all_itineraire (user_id) :
+def get_all_itineraire () :
     """
     Renvoie tout les itinéraires d'un utilisteur spécifique
     
@@ -29,7 +37,14 @@ def get_all_itineraire (user_id) :
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?itineraire
+        WHERE {
+            ?itineraire rdf:type ns1:Itineraire .
+            ?itineraire ?p ?o
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
@@ -42,7 +57,16 @@ def get_all_trajet (itineraire_id) :
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?trajet ?duree
+        WHERE {
+            ?trajet rdf:type ns1:Trajet .
+            ?trajet ns1:id itineraire_id .
+            ?trajet ns1:name .
+            ?trajet ns1:duree_trajet ?duree .
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
@@ -52,7 +76,14 @@ def get_all_cities () :
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?name
+        WHERE {
+            ?ville rdf:type ns1:Ville .
+            ?ville ns1:name ?name .
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
@@ -62,17 +93,31 @@ def get_all_place () :
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?lieu
+        WHERE {
+            ?lieu rdf:type ns1:Lieu .
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
 def get_all_place_in_city (city_id) :
     """
-    Renvoie tous les lieux dans une ville donnée par lerus id
+    Renvoie tous les lieux dans une ville donnée par leurs id
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?lieu
+        WHERE {
+            ?ville rdf:type ns1:Ville .
+            ?ville ns1:id city_id .
+            ?lieu ns1:id .
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
@@ -83,7 +128,15 @@ def get_specific_place (place_id) :
     """
     global g
 
-    result = None
+    knows_query = """
+        SELECT DISTINCT ?lieu ?details
+        WHERE {
+            ?lieu rdf:type ns1:Lieu .
+            ?lieu ns1:name .
+            ?lieu ns1:details_lieu ?details .
+        }"""
+        
+    result = g.query(knows_query)
 
     return result
 
@@ -183,6 +236,3 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     # On lies le trajet avec sa duré
     g.add(trajet_individual_uri, dure_trajet_uri, dure_litteral)
     
-
-
-def add_lieu ()
