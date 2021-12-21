@@ -21,11 +21,58 @@
     
 
 
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/effectue -->
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#arrive_a -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/effectue">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#arrive_a">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#est_combinaison -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#est_combinaison">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#part_de -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#part_de">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#possede_arret -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#possede_arret">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Bus"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#possede_gare -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#possede_gare">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ferrovier"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#utilise -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#utilise">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Transport"/>
     </owl:ObjectProperty>
     
 
@@ -34,111 +81,8 @@
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/emprunte">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/estDans -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/estDans">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ville"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/estSurLigne -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/estSurLigne">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/est_effectué_par -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/est_effectué_par">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Bus"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Metro"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Tramway"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Transport"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trotinette"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/VTC"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Velo"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/garé -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/garé">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Non_motorise"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/itineraire_depart -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/itineraire_depart">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/itineraire_fin -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/itineraire_fin">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/possede_gare -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/possede_gare">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Bus"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Metro"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Tramway"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/trajet_depart -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/trajet_depart">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/trajet_fin -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/trajet_fin">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/utilise -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/utilise">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Bus"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ferrovier"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
     </owl:ObjectProperty>
     
 
@@ -154,6 +98,33 @@
     
 
 
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#date -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#date">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#heure_debut -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#heure_debut">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport#heure_fin -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport#heure_fin">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/code_postal -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/code_postal">
@@ -166,6 +137,7 @@
     <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/compagnie -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/compagnie">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trotinette"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/VTC"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
@@ -181,31 +153,10 @@
     
 
 
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/duree_trajet -->
-
-    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/duree_trajet">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    </owl:DatatypeProperty>
-    
-
-
     <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/name -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/name">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Bus"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Metro"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Tramway"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trotinette"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Velo"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ville"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -214,7 +165,7 @@
     <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/pollution -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/pollution">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Transport"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     </owl:DatatypeProperty>
     
@@ -260,7 +211,7 @@
     <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Gare">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu"/>
     </owl:Class>
     
 
@@ -276,12 +227,6 @@
     <owl:Class rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Lieu">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ville"/>
     </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
     
 
 
@@ -385,14 +330,6 @@
     
 
 
-    <!-- http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Zone">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
-    </owl:Class>
-    
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -413,7 +350,6 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ligne"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Transport"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Ville"/>
