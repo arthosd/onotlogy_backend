@@ -38,7 +38,7 @@ def get_all_user () :
 
 def get_all_itineraire (user_name) :
     """
-    Renvoie tout les itinéraires d'un utilisteur spécifique
+    Renvoie tous les itinéraires d'un utilisteur spécifique
     
     User_name représente le nom d'un utilisateur
     """
@@ -63,8 +63,6 @@ def get_all_itineraire (user_name) :
 
     return result_final
 
-iti = get_all_itineraire("Elie")
-print(iti)
 
 def get_all_trajet (itineraire_id) :
     """
@@ -83,7 +81,15 @@ def get_all_trajet (itineraire_id) :
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
+
+    return result_final
+    
 
 def get_all_cities () :
     """
@@ -92,15 +98,22 @@ def get_all_cities () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?name
+        SELECT DISTINCT ?ville ?nom
         WHERE {
             ?ville rdf:type ns1:Ville .
-            ?ville ns1:name ?name .
+            ?ville ns1:name ?nom .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["ville"] = i[1]
+        result_final.append(d)
+
+    return result_final
 
 def get_all_place () :
     """
@@ -109,34 +122,22 @@ def get_all_place () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?name
+        SELECT DISTINCT ?lieu ?nom
         WHERE {
             ?lieu rdf:type ns1:Lieu .
-            ?lieu ns1:name ? name .
+            ?lieu ns1:name ?nom .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["lieu"] = i[1]
+        result_final.append(d)
 
-def get_all_place_in_city (city_id) :
-    """
-    Renvoie tous les lieux dans une ville donnée par leurs id
-    """
-    global g
-
-    knows_query = """
-        SELECT DISTINCT ?lieu
-        WHERE {
-            ?ville rdf:type ns1:Ville .
-            ?ville ns1:id \"""" + city_id + """\" .
-            ?lieu ns1:Lieu .
-        }"""
-        
-    result = g.query(knows_query)
-
-    return result
-
+    return result_final
 
 def get_specific_place (place_id) :
     """
@@ -145,17 +146,28 @@ def get_specific_place (place_id) :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?name ?details
+        SELECT DISTINCT ?lieu ?name ?details
         WHERE {
             ?lieu rdf:type ns1:Lieu .
-            ?lieu ns1:id = \"""" + place_id + """\" .
-            ?lieu ns1:name ?name.
+            ?lieu ns1:name \"""" + place_id + """\" .
+            ?lieu ns1:name ?name .
             ?lieu ns1:details_lieu ?details .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["lieu"] = i[1]
+        d["details"] = i[2]
+        result_final.append(d)
+
+    return result_final
+
+place = get_specific_place("Le parc des princes")
+print(place)
 
 
 # -------------------- Add middleware --------------------------
