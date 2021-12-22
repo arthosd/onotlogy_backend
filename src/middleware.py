@@ -79,11 +79,13 @@ def get_all_trajet (itineraire_id) :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?nom ?nomdepart ?nomarrivee
+        SELECT DISTINCT ?nom ?nomdepart ?nomarrivee ?nomTransport
         WHERE {
             ?itineraire rdf:type ns1:Itineraire .
             ?itineraire ns1:name \"""" + itineraire_id + """\"^^xsd:string .
             ?itineraire ns1:est_combinaison ?trajet .
+            ?trajet ns1:utilise ?transport .
+            ?transport ns1:name ?nomTransport .
             ?trajet ns1:name ?nom .
             ?trajet ns1:part_de ?depart .
             ?depart ns1:name ?nomdepart.
@@ -101,6 +103,7 @@ def get_all_trajet (itineraire_id) :
         d["nom"] = str (i[0])
         d["depart"] = str (i[1])
         d["arrivee"] = str (i[2])
+        d["transport"] = str(i[3])
         result_final.append(d)
 
     return result_final
