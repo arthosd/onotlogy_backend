@@ -29,8 +29,8 @@ def get_all_user () :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["nom"] = i[1]
+        d["URI"] = str(i[0])
+        d["nom"] = str(i[1])
         result_final.append(d)
 
     return result_final
@@ -61,11 +61,11 @@ def get_all_itineraire (user_name) :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["nom"] = i[1]
-        d["debut"] = i[2]
-        d["fin"] = i[3]
-        d["date"] = i[4]
+        d["URI"] = str(i[0])
+        d["nom"] = str(i[1])
+        d["debut"] = str(i[2])
+        d["fin"] = str(i[3])
+        d["date"] = str(i[4])
         result_final.append(d)
 
     return result_final
@@ -98,9 +98,9 @@ def get_all_trajet (itineraire_id) :
     result_final = []
     for i in result:
         d = dict()
-        d["nom"] = i[0]
-        d["depart"] = i[1]
-        d["arrivee"] = i[2]
+        d["nom"] = str (i[0])
+        d["depart"] = str (i[1])
+        d["arrivee"] = str (i[2])
         result_final.append(d)
 
     return result_final
@@ -124,8 +124,8 @@ def get_all_cities () :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["ville"] = i[1]
+        d["URI"] = str (i[0])
+        d["ville"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -148,8 +148,8 @@ def get_all_place () :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["lieu"] = i[1]
+        d["URI"] = str (i[0])
+        d["lieu"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -174,8 +174,8 @@ def get_specific_place (place_id) :
     result_final = []
     for i in result:
         d = dict()
-        d["lieu"] = i[0]
-        d["details"] = i[1]
+        d["lieu"] = str (i[0])
+        d["details"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -198,8 +198,8 @@ def get_all_stations () :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["gare"] = i[1]
+        d["URI"] = str (i[0])
+        d["gare"] = str (i[2])
         result_final.append(d)
 
     return result_final
@@ -228,14 +228,14 @@ def get_all_lines () :
     result_final = []
     for i in result:
         d = dict()
-        d["URImetro"] = i[0]
-        d["ligneMetro"] = i[1]
-        d["URIbus"] = i[2]
-        d["ligneBus"] = i[2]
-        d["URIrer"] = i[4]
-        d["ligneRer"] = i[5]
-        d["URItramway"] = i[6]
-        d["ligneTramway"] = i[7]
+        d["URImetro"] = str (i[0])
+        d["ligneMetro"] = str (i[1])
+        d["URIbus"] = str (i[2])
+        d["ligneBus"] = str (i[3])
+        d["URIrer"] = str (i[4])
+        d["ligneRer"] = str (i[5])
+        d["URItramway"] = str (i[6])
+        d["ligneTramway"] = str (i[7])
         result_final.append(d)
 
     return result_final
@@ -258,8 +258,8 @@ def get_all_metro () :
     result_final = []
     for i in result:
         d = dict()
-        d["URImetro"] = i[0]
-        d["ligneMetro"] = i[1]
+        d["URImetro"] = str (i[0])
+        d["ligneMetro"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -282,8 +282,8 @@ def get_all_bus () :
     result_final = []
     for i in result:
         d = dict()
-        d["URIbus"] = i[0]
-        d["ligneBus"] = i[1]
+        d["URIbus"] = str(i[0])
+        d["ligneBus"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -306,8 +306,8 @@ def get_all_rer () :
     result_final = []
     for i in result:
         d = dict()
-        d["URIrer"] = i[0]
-        d["ligneRer"] = i[1]
+        d["URIrer"] = str (i[0])
+        d["ligneRer"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -330,8 +330,8 @@ def get_all_tramway () :
     result_final = []
     for i in result:
         d = dict()
-        d["URItramway"] = i[0]
-        d["ligneTramway"] = i[1]
+        d["URItramway"] = str (i[0])
+        d["ligneTramway"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -354,8 +354,8 @@ def get_all_transport () :
     result_final = []
     for i in result:
         d = dict()
-        d["URI"] = i[0]
-        d["nom"] = i[1]
+        d["URI"] = str (i[0])
+        d["nom"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -409,6 +409,10 @@ def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, hor
     itineraire_uri = URIRef(base_uri+"Itineraire")
     itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name_treated)
 
+    # Inverse properties
+    est_emprunte_par_uri = URIRef(base_uri+"est_emprunte_par")
+
+
     # Horraire des itinéraires
     horaire_depart_uri = URIRef(base_uri+"heure_debut")
     horaire_fin_uri = URIRef(base_uri+"heure_fin")
@@ -434,6 +438,10 @@ def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, hor
         # On lies les deux
         g.add( (user_individual_uri, emprunte_uri, itineraire_individuals_uri) )
 
+        # On ajoute les fonctions inverse
+        g.add( (itineraire_individuals_uri, est_emprunte_par_uri,user_individual_uri) )
+
+        # On enregistre
         g.serialize(destination='ontology/test.owl', format='turtle')
 
     except Exception :
@@ -524,6 +532,15 @@ def add_lieu (nom_lieu, detail_lieu) :
 
     return True
 
+
+
+"""result = get_all_trajet('maison')
+
+for res in result :
+    print ('-----------------')
+    print (res)
+"""
+
 """
 print (add_user("Elie"))
 
@@ -577,5 +594,4 @@ result = add_trajet_for_itineraire("Parc_des_princes", {
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
 print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
-
 """
