@@ -153,7 +153,6 @@ def add_user (user_name) :
 
     user_name_treated = user_name.replace(" ", "_")
 
-    print("Triggered")
     user_uri = URIRef(base_uri+"User")
     user_individual = URIRef(base_uri+"User/"+user_name_treated)
     name_uri = URIRef(base_uri+"name")
@@ -180,6 +179,9 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
 
     itineraire_name_treated = itineraire_name.replace (" ", "_")
 
+    name_uri = URIRef(base_uri+"name")
+    itineraire_name_literal = Literal(str(itineraire_name), datatype=XSD.string)
+
     # On créer le type itinéraire ainsi que l'individu itineraire
     itineraire_uri = URIRef(base_uri+"Itineraire")
     itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name_treated)
@@ -201,6 +203,7 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
 
         # On ajoute l'individu itineraire
         g.add( (itineraire_individuals_uri, RDF.type, itineraire_uri) )
+        g.add( (itineraire_individuals_uri, name_uri, itineraire_name_literal) )
         g.add( (itineraire_individuals_uri, horaire_depart_uri, hdi) )
         g.add( (itineraire_individuals_uri, horaire_fin_uri, hfi) )
 
@@ -227,6 +230,9 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     itineraire_individual = URIRef(base_uri+"Itineraire/"+str(itineraire_name))
     est_combinaison_uri = URIRef(base_uri+"est_combinaison")
 
+    name_uri = URIRef(base_uri+"name")
+    trajet_name_literal = Literal(str(trajet_config["trajet_name"]), datatype=XSD.string)
+
     # Trajet
     trajet_uri = URIRef(base_uri+"Trajet")
     trajet_individual_uri = URIRef(base_uri+"Trajet/"+trajet_config["trajet_name"])
@@ -247,6 +253,8 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     # On lies tout
     g.add ( (trajet_individual_uri, arrive_a_uri,lieu_fin_uri) )
     g.add ( (trajet_individual_uri, part_de_uri,lieu_depart_uri) )
+
+    g.add ( (trajet_individual_uri,name_uri, trajet_name_literal) )
 
     g.add( (trajet_individual_uri, utilise_uri, transport_uri) )
 
@@ -293,8 +301,8 @@ def add_lieu (nom_lieu, detail_lieu) :
     return True
 
 
-
-"""print (add_user("Elie"))
+"""
+print (add_user("Elie"))
 
 print (add_itineraire_for_user("Elie","maison","20h30", "21h00") )
 
@@ -345,4 +353,5 @@ result = add_trajet_for_itineraire("Parc_des_princes", {
     "lieu_depart" : base_uri+"/Gare/IDFM:10027",
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
-print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))"""
+print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
+"""
