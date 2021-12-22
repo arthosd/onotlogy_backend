@@ -6,7 +6,7 @@ from rdflib import Literal, URIRef, Graph, RDF, XSD
 
 # A utiliser pour ajouter des trucs dans la bdd
 g = Graph ()
-g.parse("ontology/final.owl", format = "turtle")
+g.parse("ontology/test.owl", format = "turtle")
 
 base_uri = "http://www.semanticweb.org/elie/ontologies/2021/10/Transport/"
 
@@ -18,7 +18,7 @@ def get_all_user () :
     global g # permet d'utiliser la variable global g
 
     knows_query = """
-        SELECT DISTINCT ?nom
+        SELECT DISTINCT ?user ?nom
         WHERE {
             ?user rdf:type ns1:User .
             ?user ns1:name ?nom .
@@ -26,48 +26,85 @@ def get_all_user () :
         }"""
 
     result = g.query(knows_query)
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
 
-    return result
+    return result_final
 
-def get_all_itineraire (user_id) :
+
+def get_all_itineraire (user_name) :
     """
-    Renvoie tout les itinéraires d'un utilisteur spécifique
+    Renvoie tous les itinéraires d'un utilisateur spécifique avec heure de debut et de fin
     
-    User_id représente l'id d'un utilisateur
+    User_name représente le nom d'un utilisateur
     """
     global g
 
     knows_query = """
-        SELECT DISTINCT ?itineraire ?nom
+        SELECT DISTINCT ?itineraire ?nom ?debut ?fin ?date
         WHERE {
-            ?itineraire rdf:type ns1:Itineraire .
-            ?itineraire ns1:est_emprunte_par \"""" + user_id + """\" .
+            ?user rdf:type ns1:User .
+            ?user ns1:name \"""" + user_name + """\"^^xsd:string .
+            ?itineraire ns1:est_emprunte_par ?user .
             ?itineraire ns1:name ?nom .
+            ?itineraire ns1:heure_debut ?debut .
+            ?itineraire ns1:heure_fin ?fin .
+            ?itineraire ns1:date ?date .
 
         }"""
         
     result = g.query(knows_query)
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        d["debut"] = i[2]
+        d["fin"] = i[3]
+        d["date"] = i[4]
+        result_final.append(d)
 
-    return result
+    return result_final
 
 def get_all_trajet (itineraire_id) :
     """
-    Renvoie tout les trajet d'un itineraire spécifique (avec leurs object properties)
+    Renvoie tout les trajets d'un itineraire spécifique (avec leurs object properties)
     
     itineraire_id représente l'id d'un itineraire
     """
     global g
 
     knows_query = """
-        SELECT DISTINCT ?trajet ?duree
+        SELECT DISTINCT ?nom ?nomdepart ?nomarrivee
         WHERE {
             ?itineraire rdf:type ns1:Itineraire .
-            ?itineraire ns1:est_combinaison \"""" + itineraire_id + """\" .
+            ?itineraire ns1:name \"""" + itineraire_id + """\"^^xsd:string .
+            ?itineraire ns1:est_combinaison ?trajet .
+            ?trajet ns1:name ?nom .
+            ?trajet ns1:part_de ?depart .
+            ?depart ns1:name ?nomdepart.
+            ?trajet ns1:arrive_a ?arrivee .
+            ?arrivee ns1:name ?nomarrivee.
+
+
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["nom"] = i[0]
+        d["depart"] = i[1]
+        d["arrivee"] = i[2]
+        result_final.append(d)
+
+    return result_final
+
 
 def get_all_cities () :
     """
@@ -76,15 +113,22 @@ def get_all_cities () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?name
+        SELECT DISTINCT ?ville ?nom
         WHERE {
             ?ville rdf:type ns1:Ville .
-            ?ville ns1:name ?name .
+            ?ville ns1:name ?nom .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["ville"] = i[1]
+        result_final.append(d)
+
+    return result_final
 
 def get_all_place () :
     """
@@ -93,34 +137,22 @@ def get_all_place () :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?name
+        SELECT DISTINCT ?lieu ?nom
         WHERE {
             ?lieu rdf:type ns1:Lieu .
-            ?lieu ns1:name ? name .
+            ?lieu ns1:name ?nom .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["lieu"] = i[1]
+        result_final.append(d)
 
-def get_all_place_in_city (city_id) :
-    """
-    Renvoie tous les lieux dans une ville donnée par leurs id
-    """
-    global g
-
-    knows_query = """
-        SELECT DISTINCT ?lieu
-        WHERE {
-            ?ville rdf:type ns1:Ville .
-            ?ville ns1:id \"""" + city_id + """\" .
-            ?lieu ns1:Lieu .
-        }"""
-        
-    result = g.query(knows_query)
-
-    return result
-
+    return result_final
 
 def get_specific_place (place_id) :
     """
@@ -132,14 +164,201 @@ def get_specific_place (place_id) :
         SELECT DISTINCT ?name ?details
         WHERE {
             ?lieu rdf:type ns1:Lieu .
-            ?lieu ns1:id = \"""" + place_id + """\" .
-            ?lieu ns1:name ?name.
+            ?lieu ns1:name \"""" + place_id + """\"^^xsd:string .
+            ?lieu ns1:name ?name .
             ?lieu ns1:details_lieu ?details .
         }"""
         
     result = g.query(knows_query)
 
-    return result
+    result_final = []
+    for i in result:
+        d = dict()
+        d["lieu"] = i[0]
+        d["details"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_stations () :
+    """
+    Renvoie toutes les gares dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?gare ?nom
+        WHERE {
+            ?gare rdf:type ns1:Gare .
+            ?gare ns1:name ?nom .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["gare"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_lines () :
+    """
+    Renvoie toutes les lignes de transport en communs dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?metro ?ligneMetro ?bus ?ligneBus ?rer ?ligneRer ?tramway ?ligneTramway
+        WHERE {
+            ?metro rdf:type ns1:Metro .
+            ?metro ns1:name ?ligneMetro .
+            ?bus rdf:type ns1:Bus .
+            ?bus ns1:name ?ligneBus .
+            ?rer rdf:type ns1:Rer .
+            ?rer ns1:name ?ligneRer .
+            ?tramway rdf:type ns1:tramway .
+            ?tramway ns1:name ?ligneTramway .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URImetro"] = i[0]
+        d["ligneMetro"] = i[1]
+        d["URIbus"] = i[2]
+        d["ligneBus"] = i[2]
+        d["URIrer"] = i[4]
+        d["ligneRer"] = i[5]
+        d["URItramway"] = i[6]
+        d["ligneTramway"] = i[7]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_metro () :
+    """
+    Renvoie toutes les lignes de metro dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?metro ?ligneMetro
+        WHERE {
+            ?metro rdf:type ns1:Metro .
+            ?metro ns1:name ?ligneMetro .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URImetro"] = i[0]
+        d["ligneMetro"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_bus () :
+    """
+    Renvoie toutes les lignes de bus dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?bus ?ligneBus
+        WHERE {
+            ?bus rdf:type ns1:Bus .
+            ?bus ns1:name ?ligneBus .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URIbus"] = i[0]
+        d["ligneBus"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_rer () :
+    """
+    Renvoie toutes les lignes de rer dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?rer ?ligneRer
+        WHERE {
+            ?rer rdf:type ns1:Rer .
+            ?rer ns1:name ?ligneRer .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URIrer"] = i[0]
+        d["ligneRer"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_tramway () :
+    """
+    Renvoie toutes les lignes de tramway dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?tramway ?ligneTramway
+        WHERE {
+            ?tramway rdf:type ns1:Tramway .
+            ?tramway ns1:name ?ligneTramway .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URItramway"] = i[0]
+        d["ligneTramway"] = i[1]
+        result_final.append(d)
+
+    return result_final
+
+def get_all_transport () :
+    """
+    Renvoie tous les moyens de transport dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?transport ?nom
+        WHERE {
+            ?transport rdf:type ns1:Transport .
+            ?transport ns1:name ?nom .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
+
+    return result_final
 
 
 # -------------------- Add middleware --------------------------
