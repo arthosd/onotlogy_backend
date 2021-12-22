@@ -151,8 +151,11 @@ def add_user (user_name) :
     global base_uri
     global g
 
+    user_name_treated = user_name.replace(" ", "_")
+
+    print("Triggered")
     user_uri = URIRef(base_uri+"User")
-    user_individual = URIRef(base_uri+"User/"+user_name)
+    user_individual = URIRef(base_uri+"User/"+user_name_treated)
     name_uri = URIRef(base_uri+"name")
     name_literal = Literal(str(user_name), datatype=XSD.string)
 
@@ -175,9 +178,11 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
     global base_uri
     global g
 
+    itineraire_name_treated = itineraire_name.replace (" ", "_")
+
     # On créer le type itinéraire ainsi que l'individu itineraire
     itineraire_uri = URIRef(base_uri+"Itineraire")
-    itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name)
+    itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name_treated)
 
     # Horraire des itinéraires
     horaire_depart_uri = URIRef(base_uri+"heure_debut")
@@ -287,9 +292,18 @@ def add_lieu (nom_lieu, detail_lieu) :
 
     return True
 
-"""
+
+
+"""print (add_user("Elie"))
+
 print (add_itineraire_for_user("Elie","maison","20h30", "21h00") )
 
+result = add_trajet_for_itineraire("maison", {
+    "trajet_name" : "part_1",
+    "transport" : base_uri + "Rer/C00006",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
 
 result = add_trajet_for_itineraire("maison", {
     "trajet_name" : "part_2",
@@ -298,5 +312,39 @@ result = add_trajet_for_itineraire("maison", {
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
 
-print (add_lieu("La maison de ma grand-mère", "C'est la maison de ma grand mère"))
+result = add_trajet_for_itineraire("maison", {
+    "trajet_name" : "part_2",
+    "transport" : base_uri + "Rer/C00006",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
+
+
+print (add_user("Julien Champagne"))
+
+print (add_itineraire_for_user("Julien_Champagne","Universite maison","20h30", "21h00") )
+print (add_itineraire_for_user("Julien_Champagne","Parc des princes","20h30", "21h00") )
+
+result = add_trajet_for_itineraire("Universite_maison", {
+    "trajet_name" : "julien_1",
+    "transport" : base_uri + "Tramway/C01389",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
+result = add_trajet_for_itineraire("Universite_maison", {
+    "trajet_name" : "julien_2",
+    "transport" : base_uri + "Rer/C00006",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
+
+
+result = add_trajet_for_itineraire("Parc_des_princes", {
+    "trajet_name" : "parc_1",
+    "transport" : base_uri + "Rer/C00006",
+    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
+    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
+})
+print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
+
 """

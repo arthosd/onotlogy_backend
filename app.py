@@ -1,8 +1,34 @@
 from flask import Flask, request
 
+from src.middleware import add_user, add_lieu
+
 app = Flask (__name__)
 base_url = "/api/V1/ontology/"
 
+
+@app.route(base_url+"places/add", methods = ['POST'])
+def add_place ():
+    """
+    Add place in ontology
+    """
+    if request.method == 'POST':
+        result = add_lieu(
+            request.json["place_name"],
+            request.json["place_description"]
+        )
+
+        return {
+            "status" : 200,
+            "meesage" : "Place added"
+        } if result == True else {
+            "status" : 500,
+            "meesage" : "Server error !"
+        }
+
+    return {
+        "status" : 400,
+        "meesage" : "Bad request !"
+    }
 
 # get tout les lieux
 @app.route(base_url+"places")
@@ -28,7 +54,7 @@ def get_all_place () :
     
 
 # get users specific trajets
-@app.route(base_url+"user/<user_token>/tajet/<trajet_id>")
+@app.route(base_url+"user/<user_token>/tajet/<trajet_id>", methods = ['GET', 'POST'])
 def get_add_specific_trajet (user_token, trajet_id) :
     """
     Return all the itineraries of a trajet
@@ -120,11 +146,15 @@ def get_add_user (user_token) :
             "id" : str(user_token)
         } 
     
-    # If it's postn we create user
+    # Si la requete est en post, on créer l'utilisateur
+    result = add_user (user_token.replace(" ","_"))
 
     return {
         "status" : 200,
         "id" : str(user_token)
+    } if result == True else {
+        "status" : 400,
+        "message" : "Could not add user to database."
     }
 
 # Get all the users from ontology
