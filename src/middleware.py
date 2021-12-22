@@ -170,7 +170,7 @@ def add_user (user_name) :
     return True
 
 
-def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_fin) :
+def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, horaire_fin) :
     """
     Rajoute un itineraire dans l'ontologie
     """
@@ -181,6 +181,10 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
 
     name_uri = URIRef(base_uri+"name")
     itineraire_name_literal = Literal(str(itineraire_name), datatype=XSD.string)
+
+    # Date
+    date_uri_litteral = Literal(str(date), datatype=XSD.string)
+    date_uri = URIRef(base_uri+"date")
 
     # On créer le type itinéraire ainsi que l'individu itineraire
     itineraire_uri = URIRef(base_uri+"Itineraire")
@@ -203,6 +207,7 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
 
         # On ajoute l'individu itineraire
         g.add( (itineraire_individuals_uri, RDF.type, itineraire_uri) )
+        g.add( (itineraire_individuals_uri, date_uri, date_uri_litteral) )
         g.add( (itineraire_individuals_uri, name_uri, itineraire_name_literal) )
         g.add( (itineraire_individuals_uri, horaire_depart_uri, hdi) )
         g.add( (itineraire_individuals_uri, horaire_fin_uri, hfi) )
@@ -301,10 +306,10 @@ def add_lieu (nom_lieu, detail_lieu) :
     return True
 
 
-"""
+
 print (add_user("Elie"))
 
-print (add_itineraire_for_user("Elie","maison","20h30", "21h00") )
+print (add_itineraire_for_user("Elie","maison","02/11/1999","20h30", "21h00") )
 
 result = add_trajet_for_itineraire("maison", {
     "trajet_name" : "part_1",
@@ -330,8 +335,8 @@ result = add_trajet_for_itineraire("maison", {
 
 print (add_user("Julien Champagne"))
 
-print (add_itineraire_for_user("Julien_Champagne","Universite maison","20h30", "21h00") )
-print (add_itineraire_for_user("Julien_Champagne","Parc des princes","20h30", "21h00") )
+print (add_itineraire_for_user("Julien_Champagne","Universite maison","02/11/2002","20h30", "21h00") )
+print (add_itineraire_for_user("Julien_Champagne","Parc des princes","02/11/2005","20h30", "21h00") )
 
 result = add_trajet_for_itineraire("Universite_maison", {
     "trajet_name" : "julien_1",
@@ -354,4 +359,3 @@ result = add_trajet_for_itineraire("Parc_des_princes", {
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
 print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
-"""
