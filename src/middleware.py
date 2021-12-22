@@ -84,8 +84,6 @@ def get_all_trajet (itineraire_id) :
             ?itineraire rdf:type ns1:Itineraire .
             ?itineraire ns1:name \"""" + itineraire_id + """\"^^xsd:string .
             ?itineraire ns1:est_combinaison ?trajet .
-            ?trajet ns1:utilise ?transport .
-            ?transport ns1:name ?nomTransport .
             ?trajet ns1:name ?nom .
             ?trajet ns1:part_de ?depart .
             ?depart ns1:name ?nomdepart.
@@ -94,6 +92,10 @@ def get_all_trajet (itineraire_id) :
 
 
         }"""
+
+        
+        # ?trajet ns1:utilise ?transport .
+        # ?transport ns1:name ?nomTransport .
         
     result = g.query(knows_query)
 
@@ -103,7 +105,7 @@ def get_all_trajet (itineraire_id) :
         d["nom"] = str (i[0])
         d["depart"] = str (i[1])
         d["arrivee"] = str (i[2])
-        d["transport"] = str(i[3])
+        # d["transport"] = str(i[3])
         result_final.append(d)
 
     return result_final
@@ -202,7 +204,7 @@ def get_all_stations () :
     for i in result:
         d = dict()
         d["URI"] = str (i[0])
-        d["gare"] = str (i[2])
+        d["gare"] = str (i[1])
         result_final.append(d)
 
     return result_final
@@ -534,15 +536,6 @@ def add_lieu (nom_lieu, detail_lieu) :
         return False
 
     return True
-
-
-
-"""result = get_all_trajet('maison')
-
-for res in result :
-    print ('-----------------')
-    print (res)
-"""
 
 """
 print (add_user("Elie"))
