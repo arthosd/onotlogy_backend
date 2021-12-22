@@ -305,8 +305,7 @@ def add_lieu (nom_lieu, detail_lieu) :
 
     return True
 
-
-
+"""
 print (add_user("Elie"))
 
 print (add_itineraire_for_user("Elie","maison","02/11/1999","20h30", "21h00") )
@@ -359,3 +358,5 @@ result = add_trajet_for_itineraire("Parc_des_princes", {
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
 print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
+
+"""
