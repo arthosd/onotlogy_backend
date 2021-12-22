@@ -75136,42 +75136,50 @@ ns1:vtc_stats a owl:DatatypeProperty ;
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/Parc_des_princes> a ns1:Itineraire ;
     ns1:est_combinaison <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/parc_1> ;
     ns1:heure_debut "20h30"^^xsd:string ;
-    ns1:heure_fin "21h00"^^xsd:string .
+    ns1:heure_fin "21h00"^^xsd:string ;
+    ns1:name "Parc des princes"^^xsd:string .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/Universite_maison> a ns1:Itineraire ;
     ns1:est_combinaison <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/julien_1>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/julien_2> ;
     ns1:heure_debut "20h30"^^xsd:string ;
-    ns1:heure_fin "21h00"^^xsd:string .
+    ns1:heure_fin "21h00"^^xsd:string ;
+    ns1:name "Universite maison"^^xsd:string .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/maison> a ns1:Itineraire ;
     ns1:est_combinaison <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/part_1>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/part_2> ;
     ns1:heure_debut "20h30"^^xsd:string ;
-    ns1:heure_fin "21h00"^^xsd:string .
+    ns1:heure_fin "21h00"^^xsd:string ;
+    ns1:name "maison"^^xsd:string .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/julien_1> a ns1:Trajet ;
     ns1:arrive_a <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10014> ;
+    ns1:name "julien_1"^^xsd:string ;
     ns1:part_de <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10027> ;
     ns1:utilise <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Tramway/C01389> .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/julien_2> a ns1:Trajet ;
     ns1:arrive_a <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10014> ;
+    ns1:name "julien_2"^^xsd:string ;
     ns1:part_de <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10027> ;
     ns1:utilise <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer/C00006> .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/parc_1> a ns1:Trajet ;
     ns1:arrive_a <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10014> ;
+    ns1:name "parc_1"^^xsd:string ;
     ns1:part_de <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10027> ;
     ns1:utilise <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer/C00006> .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/part_1> a ns1:Trajet ;
     ns1:arrive_a <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10014> ;
+    ns1:name "part_1"^^xsd:string ;
     ns1:part_de <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10027> ;
     ns1:utilise <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer/C00006> .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Trajet/part_2> a ns1:Trajet ;
     ns1:arrive_a <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10014> ;
+    ns1:name "part_2"^^xsd:string ;
     ns1:part_de <http://www.semanticweb.org/elie/ontologies/2021/10/Transport//Gare/IDFM:10027> ;
     ns1:utilise <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Rer/C00006> .
 
