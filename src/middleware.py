@@ -336,6 +336,29 @@ def get_all_tramway () :
 
     return result_final
 
+def get_all_transport () :
+    """
+    Renvoie tous les moyens de transport dans l'ontologie
+    """
+    global g
+
+    knows_query = """
+        SELECT DISTINCT ?transport ?nom
+        WHERE {
+            ?transport rdf:type ns1:Transport .
+            ?transport ns1:name ?nom .
+        }"""
+        
+    result = g.query(knows_query)
+
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
+
+    return result_final
 
 
 # -------------------- Add middleware --------------------------
