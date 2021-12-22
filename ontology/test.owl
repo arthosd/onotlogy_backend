@@ -75094,11 +75094,11 @@
     ns1:name "Le parc des princes"^^xsd:string .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User/Elie> a ns1:User ;
-    ns1:effectue <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/maison> ;
+    ns1:emprunte <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/maison> ;
     ns1:name "Elie"^^xsd:string .
 
 <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/User/Julien_Champagne> a ns1:User ;
-    ns1:effectue <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/Parc_des_princes>,
+    ns1:emprunte <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/Parc_des_princes>,
         <http://www.semanticweb.org/elie/ontologies/2021/10/Transport/Itineraire/Universite_maison> ;
     ns1:name "Julien Champagne"^^xsd:string .
 

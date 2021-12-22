@@ -211,7 +211,7 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
     user_individual_uri = URIRef(base_uri+"User/"+user_name)
 
     # On créer le lien qui uni les deux
-    effectue_uri = URIRef(base_uri+"effectue")
+    emprunte_uri = URIRef(base_uri+"emprunte")
 
     try :
 
@@ -221,7 +221,7 @@ def add_itineraire_for_user (user_name, itineraire_name, horaire_debut, horaire_
         g.add( (itineraire_individuals_uri, horaire_fin_uri, hfi) )
 
         # On lies les deux
-        g.add( (user_individual_uri, effectue_uri, itineraire_individuals_uri) )
+        g.add( (user_individual_uri, emprunte_uri, itineraire_individuals_uri) )
 
         g.serialize(destination='ontology/test.owl', format='turtle')
 
@@ -361,6 +361,4 @@ result = add_trajet_for_itineraire("Parc_des_princes", {
     "lieu_depart" : base_uri+"/Gare/IDFM:10027",
     "lieu_fin" : base_uri+"/Gare/IDFM:10014"
 })
-print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
-
-"""
+print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))"""
