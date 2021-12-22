@@ -6,7 +6,7 @@ from rdflib import Literal, URIRef, Graph, RDF, XSD
 
 # A utiliser pour ajouter des trucs dans la bdd
 g = Graph ()
-g.parse("ontology/final.owl", format = "turtle")
+g.parse("ontology/test.owl", format = "turtle")
 
 base_uri = "http://www.semanticweb.org/elie/ontologies/2021/10/Transport/"
 
@@ -18,7 +18,7 @@ def get_all_user () :
     global g # permet d'utiliser la variable global g
 
     knows_query = """
-        SELECT DISTINCT ?nom
+        SELECT DISTINCT ?user ?nom
         WHERE {
             ?user rdf:type ns1:User .
             ?user ns1:name ?nom .
@@ -26,14 +26,21 @@ def get_all_user () :
         }"""
 
     result = g.query(knows_query)
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
 
-    return result
+    return result_final
 
-def get_all_itineraire (user_id) :
+
+def get_all_itineraire (user_name) :
     """
     Renvoie tout les itinéraires d'un utilisteur spécifique
     
-    User_id représente l'id d'un utilisateur
+    User_name représente le nom d'un utilisateur
     """
     global g
 
@@ -41,14 +48,23 @@ def get_all_itineraire (user_id) :
         SELECT DISTINCT ?itineraire ?nom
         WHERE {
             ?itineraire rdf:type ns1:Itineraire .
-            ?itineraire ns1:est_emprunte_par \"""" + user_id + """\" .
+            ?itineraire ns1:est_emprunte_par \"""" + user_name + """\" .
             ?itineraire ns1:name ?nom .
 
         }"""
         
     result = g.query(knows_query)
+    result_final = []
+    for i in result:
+        d = dict()
+        d["URI"] = i[0]
+        d["nom"] = i[1]
+        result_final.append(d)
 
-    return result
+    return result_final
+
+iti = get_all_itineraire("Elie")
+print(iti)
 
 def get_all_trajet (itineraire_id) :
     """
