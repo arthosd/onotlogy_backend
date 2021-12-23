@@ -15,7 +15,8 @@ def add_place ():
     if request.method == 'POST':
         result = add_lieu(
             request.json["place_name"],
-            request.json["place_description"]
+            request.json["place_description"],
+            request.json["ville_uri"]
         )
 
         return {

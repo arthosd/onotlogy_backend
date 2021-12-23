@@ -1,12 +1,11 @@
 """
 Contient toutes les fonctions de récupérations pour l'ontologie
 """
-
 from rdflib import Literal, URIRef, Graph, RDF, XSD
 
 # A utiliser pour ajouter des trucs dans la bdd
 g = Graph ()
-g.parse("ontology/test.owl", format = "turtle")
+g.parse("ontology/final.owl", format = "turtle")
 
 base_uri = "http://www.semanticweb.org/elie/ontologies/2021/10/Transport/"
 
@@ -79,23 +78,19 @@ def get_all_trajet (itineraire_id) :
     global g
 
     knows_query = """
-        SELECT DISTINCT ?nom ?nomdepart ?nomarrivee ?nomTransport
+        SELECT ?nom ?nomdepart ?nomarrivee ?transport ?nomTransport
         WHERE {
             ?itineraire rdf:type ns1:Itineraire .
             ?itineraire ns1:name \"""" + itineraire_id + """\"^^xsd:string .
             ?itineraire ns1:est_combinaison ?trajet .
+            ?trajet ns1:utilise ?transport .
+            ?transport ns1:name ?nomTransport .
             ?trajet ns1:name ?nom .
             ?trajet ns1:part_de ?depart .
             ?depart ns1:name ?nomdepart.
             ?trajet ns1:arrive_a ?arrivee .
-            ?arrivee ns1:name ?nomarrivee.
-
-
+            ?arrivee ns1:name ?nomarrivee .
         }"""
-
-        
-        # ?trajet ns1:utilise ?transport .
-        # ?transport ns1:name ?nomTransport .
         
     result = g.query(knows_query)
 
@@ -105,7 +100,9 @@ def get_all_trajet (itineraire_id) :
         d["nom"] = str (i[0])
         d["depart"] = str (i[1])
         d["arrivee"] = str (i[2])
-        # d["transport"] = str(i[3])
+        x = str(i[3]).split('/')
+        d["typeTransport"] = x[-2]
+        d["moyenTransport"] = str(i[4])
         result_final.append(d)
 
     return result_final
@@ -263,8 +260,9 @@ def get_all_metro () :
     result_final = []
     for i in result:
         d = dict()
-        d["URImetro"] = str (i[0])
-        d["ligneMetro"] = str (i[1])
+        d["URI"] = str (i[0])
+        d["ligne"] = str (i[1])
+        d["type"] = "metro"
         result_final.append(d)
 
     return result_final
@@ -287,8 +285,9 @@ def get_all_bus () :
     result_final = []
     for i in result:
         d = dict()
-        d["URIbus"] = str(i[0])
-        d["ligneBus"] = str (i[1])
+        d["URI"] = str(i[0])
+        d["ligne"] = str (i[1])
+        d["type"] = "bus"
         result_final.append(d)
 
     return result_final
@@ -311,8 +310,9 @@ def get_all_rer () :
     result_final = []
     for i in result:
         d = dict()
-        d["URIrer"] = str (i[0])
-        d["ligneRer"] = str (i[1])
+        d["URI"] = str (i[0])
+        d["ligne"] = str (i[1])
+        d["type"] = "metro"
         result_final.append(d)
 
     return result_final
@@ -335,8 +335,9 @@ def get_all_tramway () :
     result_final = []
     for i in result:
         d = dict()
-        d["URItramway"] = str (i[0])
-        d["ligneTramway"] = str (i[1])
+        d["URI"] = str (i[0])
+        d["ligne"] = str (i[1])
+        d["type"] = "metro"
         result_final.append(d)
 
     return result_final
@@ -386,7 +387,7 @@ def add_user (user_name) :
         g.add((user_individual, RDF.type, user_uri)) # Adding individuals
         g.add( (user_individual, name_uri, name_literal) ) # adding name
 
-        g.serialize(destination='ontology/test.owl', format='turtle')
+        g.serialize(destination='ontology/final.owl', format='turtle')
 
     except Exception :
         return False
@@ -401,10 +402,12 @@ def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, hor
     global base_uri
     global g
 
+    user_name = user_name.replace(" ", "_")
     itineraire_name_treated = itineraire_name.replace (" ", "_")
+    itineraire_name_treated = itineraire_name_treated +"_"+user_name
 
     name_uri = URIRef(base_uri+"name")
-    itineraire_name_literal = Literal(str(itineraire_name), datatype=XSD.string)
+    itineraire_name_literal = Literal(itineraire_name_treated, datatype=XSD.string)
 
     # Date
     date_uri_litteral = Literal(str(date), datatype=XSD.string)
@@ -447,7 +450,7 @@ def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, hor
         g.add( (itineraire_individuals_uri, est_emprunte_par_uri,user_individual_uri) )
 
         # On enregistre
-        g.serialize(destination='ontology/test.owl', format='turtle')
+        g.serialize(destination='ontology/final.owl', format='turtle')
 
     except Exception :
         print ("ERROR !")
@@ -463,8 +466,10 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     global base_uri
     global g
 
+    itineraire_treated = itineraire_name.replace(" ", "_")
+
     # Itineraire
-    itineraire_individual = URIRef(base_uri+"Itineraire/"+str(itineraire_name))
+    itineraire_individual = URIRef(base_uri+"Itineraire/"+itineraire_treated)
     est_combinaison_uri = URIRef(base_uri+"est_combinaison")
 
     name_uri = URIRef(base_uri+"name")
@@ -498,12 +503,12 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
     # On lie le trajet avec l'itineraire
     g.add ( (itineraire_individual, est_combinaison_uri, trajet_individual_uri) )
 
-    g.serialize(destination='ontology/test.owl', format='turtle')
+    g.serialize(destination='ontology/final.owl', format='turtle')
 
     return True
 
 
-def add_lieu (nom_lieu, detail_lieu) :
+def add_lieu (nom_lieu, detail_lieu, villeUri) :
     """
     Ajoute des lieux dans la base de données
     """
@@ -512,6 +517,10 @@ def add_lieu (nom_lieu, detail_lieu) :
     global base_uri
 
     nom_lieu_treated = nom_lieu.replace(" ", "_")
+
+    # Ville
+    se_situe_uri = URIRef(base_uri+"se_trouve")
+    ville_uri = URIRef(villeUri)
 
     lieu_uri = URIRef(base_uri+"Lieu")
     lieu_individual_uri = URIRef(base_uri+"Lieu/"+nom_lieu_treated)
@@ -529,65 +538,12 @@ def add_lieu (nom_lieu, detail_lieu) :
         g.add ( (lieu_individual_uri, name_uri, name_literal) ) # On lies avec le noms
         g.add ( (lieu_individual_uri, detail_uri, detail_literal) ) # On lies avec le noms
 
-        g.serialize(destination='ontology/test.owl', format='turtle')
+        g.add( (lieu_individual_uri, se_situe_uri, ville_uri) )
+
+        g.serialize(destination='ontology/final.owl', format='turtle')
 
     except Exception :
         print ("ERROR !")
         return False
 
     return True
-
-"""
-print (add_user("Elie"))
-
-print (add_itineraire_for_user("Elie","maison","02/11/1999","20h30", "21h00") )
-
-result = add_trajet_for_itineraire("maison", {
-    "trajet_name" : "part_1",
-    "transport" : base_uri + "Rer/C00006",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-
-result = add_trajet_for_itineraire("maison", {
-    "trajet_name" : "part_2",
-    "transport" : base_uri + "Rer/C00006",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-
-result = add_trajet_for_itineraire("maison", {
-    "trajet_name" : "part_2",
-    "transport" : base_uri + "Rer/C00006",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-
-
-print (add_user("Julien Champagne"))
-
-print (add_itineraire_for_user("Julien_Champagne","Universite maison","02/11/2002","20h30", "21h00") )
-print (add_itineraire_for_user("Julien_Champagne","Parc des princes","02/11/2005","20h30", "21h00") )
-
-result = add_trajet_for_itineraire("Universite_maison", {
-    "trajet_name" : "julien_1",
-    "transport" : base_uri + "Tramway/C01389",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-result = add_trajet_for_itineraire("Universite_maison", {
-    "trajet_name" : "julien_2",
-    "transport" : base_uri + "Rer/C00006",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-
-
-result = add_trajet_for_itineraire("Parc_des_princes", {
-    "trajet_name" : "parc_1",
-    "transport" : base_uri + "Rer/C00006",
-    "lieu_depart" : base_uri+"/Gare/IDFM:10027",
-    "lieu_fin" : base_uri+"/Gare/IDFM:10014"
-})
-print (add_lieu("Le parc des princes", "Je vais voir du foot la bas lol"))
-"""
