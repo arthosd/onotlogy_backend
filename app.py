@@ -302,6 +302,39 @@ def get_transport () :
         "status" : 200
     }
 
+
+@app.route(base_url+"destination")
+def get_all_place_gare () :
+    """
+    Get all gares and place
+    """
+
+    result_statitions = get_all_stations ()
+    result_place = get_all_place()
+
+    return {
+        "data" : result_statitions + result_place,
+        "status" : 200
+    }
+
+@app.route(base_url+"navigation")
+def get_all_navigation () :
+    """
+    Get all metro, rer, tramway
+    """
+
+    result_bus = get_all_bus ()
+    result_metro = get_all_metro()
+    result_tramvay = get_all_tramway()
+    result_rer = get_all_rer()
+
+    result = result_bus + result_metro + result_tramvay + result_rer
+
+    return {
+        "data" : result,
+        "status" : 200
+    }
+
 # Server info
 @app.route("/info")
 def info () :
