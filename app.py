@@ -1,11 +1,72 @@
 from flask import Flask, request
 
-from src.middleware import add_trajet_for_itineraire,add_user, add_lieu,add_itineraire_for_user
+from src.middleware import add_trajet_for_itineraire,add_user, add_lieu,add_itineraire_for_user, delete_itineraire
 from src.middleware import get_all_transport, get_all_tramway,get_all_rer,get_all_bus, get_all_metro, get_all_lines, get_all_user, get_all_itineraire, get_all_trajet, get_all_cities, get_all_place, get_specific_place, get_all_stations
+from src.middleware import delete_user, delete_itineraire, delete_lieu
+
 
 app = Flask (__name__)
 base_url = "/api/V1/ontology/"
 
+
+@app.route(base_url+"user/delete/<user_name>")
+def delete_user_endpoint (user_name):
+    """
+    Get name from url and delete user from database
+    """
+
+    result = delete_user(user_name)
+
+    if result == False :
+        return{
+            "status" : 400,
+            "meesage" : "ERROR While deleting user triple !"
+        }
+
+    return{
+            "status" : 200,
+            "meesage" : "User "+user_name+" successfuly deleted"
+    }
+
+@app.route(base_url+"itineraire/delete/<itineraire_name>")
+def delete_itineraire_endpoint (itineraire_name):
+    """
+    Get itineraire_name from url and delete itineraire from database
+    """
+
+    result = delete_itineraire(itineraire_name)
+
+    if result == False :
+        return{
+            "status" : 400,
+            "meesage" : "ERROR While deleting user triple !"
+        }
+
+    return{
+            "status" : 200,
+            "meesage" : "Itineraire "+itineraire_name+" successfuly deleted"
+    }
+
+@app.route(base_url+"itineraire/delete/<place_name>")
+def delete_place_endpoint (place_name):
+    """
+    Get place_name from url and delete itineraire from database
+    """
+
+    result = delete_lieu(place_name)
+
+    if result == False :
+        return{
+            "status" : 400,
+            "meesage" : "ERROR While deleting user triple !"
+        }
+
+    return{
+            "status" : 200,
+            "meesage" : "place "+place_name+" successfuly deleted"
+    }
+    
+    
 
 @app.route(base_url+"places/add", methods = ['POST'])
 def add_place ():
@@ -32,7 +93,6 @@ def add_place ():
         "meesage" : "Bad request !"
     }
 
-
 # Add trajets
 @app.route(base_url+"user/<user_token>/tajets/<trajet_id>", methods = ['POST'])
 def add_user_trajets (user_token, trajet_id) :
@@ -56,7 +116,6 @@ def add_user_trajets (user_token, trajet_id) :
             "id" : str(trajet_id)
         }]
     } 
-
 
 # Add or Get specific user
 @app.route(base_url+"users/<user_token>", methods = ['POST'])
@@ -182,7 +241,6 @@ def get_cities () :
         "status" : 200
     }
 
-
 # Get all places
 @app.route(base_url+"cities/places")
 def get_places () :
@@ -236,7 +294,6 @@ def get_lines () :
         "data" : result,
         "status" : 200
     }
-
 
 @app.route(base_url+"lines/metro")
 def get_metro () :
@@ -303,7 +360,6 @@ def get_transport () :
         "status" : 200
     }
 
-
 @app.route(base_url+"destination")
 def get_all_place_gare () :
     """
@@ -346,6 +402,7 @@ def info () :
         "version" : 1.0,
         "status" : 200
     }
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

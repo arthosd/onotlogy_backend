@@ -9,7 +9,6 @@ g.parse("ontology/final.owl", format = "turtle")
 
 base_uri = "http://www.semanticweb.org/elie/ontologies/2021/10/Transport/"
 
-
 def get_all_user () :
     """
     Renvoie tout les utilisateurs dans l'ontologie
@@ -33,7 +32,6 @@ def get_all_user () :
         result_final.append(d)
 
     return result_final
-
 
 def get_all_itineraire (user_name) :
     """
@@ -106,7 +104,6 @@ def get_all_trajet (itineraire_id) :
         result_final.append(d)
 
     return result_final
-
 
 def get_all_cities () :
     """
@@ -366,7 +363,6 @@ def get_all_transport () :
 
     return result_final
 
-
 # -------------------- Add middleware --------------------------
 
 def add_user (user_name) :
@@ -393,7 +389,6 @@ def add_user (user_name) :
         return False
 
     return True
-
 
 def add_itineraire_for_user (user_name, itineraire_name,date ,horaire_debut, horaire_fin) :
     """
@@ -507,7 +502,6 @@ def add_trajet_for_itineraire (itineraire_name, trajet_config) :
 
     return True
 
-
 def add_lieu (nom_lieu, detail_lieu, villeUri) :
     """
     Ajoute des lieux dans la base de données
@@ -544,6 +538,73 @@ def add_lieu (nom_lieu, detail_lieu, villeUri) :
 
     except Exception :
         print ("ERROR !")
+        return False
+
+    return True
+
+
+# -------------------- delete middleware --------------------------
+
+def delete_user (user_name):
+    """
+    Delete triple
+    """
+
+    global g
+    global base_uri
+
+    user_individual = URIRef(base_uri+"User/"+user_name)
+
+    try :
+
+        g.remove( (user_individual, None, None) )
+        g.serialize(destination='ontology/final.owl', format='turtle')
+
+    except Exception as e :
+        print (e)
+        return False
+
+    return True
+
+def delete_itineraire (itineraire_name) :
+    """
+    Delete triple of itinerary
+    """
+
+    global g
+    global base_uri
+
+    itineraire_individuals_uri = URIRef(base_uri+"Itineraire/"+itineraire_name)
+
+    try :
+
+        g.remove ( (itineraire_individuals_uri, None , None) )
+        g.serialize(destination='ontology/final.owl', format='turtle')
+
+    except Exception as e :
+
+        print (e)
+
+        return False
+
+    return True
+
+def delete_lieu (nom_lieu):
+
+    global g
+    global base_uri
+
+    lieu_individual_uri = URIRef(base_uri+"Lieu/"+nom_lieu)
+
+    try :
+
+        g.remove ( (lieu_individual_uri, None , None) )
+        g.serialize(destination='ontology/final.owl', format='turtle')
+
+    except Exception as e :
+
+        print (e)
+
         return False
 
     return True
